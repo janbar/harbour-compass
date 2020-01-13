@@ -17,7 +17,6 @@ OTHER_FILES += qml/harbour-orienteeringcompass.qml \
     rpm/harbour-orienteeringcompass.spec \
     rpm/harbour-orienteeringcompass.yaml \
     harbour-orienteeringcompass.desktop \
-    graphics/compass_app_icon_86x86.svg \
     qml/pages/CompassPage.qml \
     qml/pages/CoverPage.qml \
     qml/pages/OrientCompassSensor.qml \
@@ -30,6 +29,7 @@ OTHER_FILES += qml/harbour-orienteeringcompass.qml \
     qml/pages/CompassSettings.qml \
     qml/pages/CalibrationPage.qml \
     qml/pages/SwitchRow.qml \
+    qml/pages/Units.qml \
     COPYING.txt \
     README.txt
 

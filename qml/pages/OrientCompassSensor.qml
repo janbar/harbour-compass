@@ -29,8 +29,8 @@ import QtSensors 5.0
 Item {
     id: compass
 
-    property alias active: compassSensor.active
-    property real calibration: 1.0 // Default to 100%
+    property alias active: activeSensor.running
+    property real calibration: 0.0 // Default to 100%
     property real azimuth: 0.0     // current azimuth in degrees
     property real direction: 0.0   // the orienteering direction set by user, 0-359.99 degrees
     property bool rightDirection: false // (Math.abs(azimuth - direction) < 2.0 || Math.abs(azimuth - direction) > 358.0)
@@ -48,20 +48,42 @@ Item {
         return angle360 / 360 * compassScaleVal
     }
 
+    property real value: 0.0
+
     Compass {
         id: compassSensor
 
         onReadingChanged: {
-            // TODO: normalize azimuth to 0-360??
-            azimuth = reading.azimuth;
-            rightDirection = (Math.abs(azimuth - __normalDirection) < 2.0 || Math.abs(azimuth - __normalDirection) > 358.0)
-            calibration = reading.calibrationLevel
-//            console.log("Compass azimuth: " + reading.azimuth + " direction: " + compass.__normalDirection +
-//                        " calibration " + reading.calibrationLevel)
+            compass.value = reading.azimuth;
+            var c = reading.calibrationLevel;
+            if (c > compass.calibration)
+                compass.calibration = c;
+            compassReader.start();
         }
-        onActiveChanged: {
-            // Debug purposes only
-            console.log("***Compass sensor: " + (active ? "START" : "STOP"));
+    }
+
+    Timer {
+        id: compassReader
+        interval: 500
+        onTriggered: {
+            var n = compass.value;
+            compass.azimuth = n;
+            compass.rightDirection = (Math.abs(n - compass.__normalDirection) < 4.0 || Math.abs(n - compass.__normalDirection) > 356.0);
+        }
+    }
+
+    //!FIXME: Sony Xperia 10 needs challenge
+    Timer {
+        id: activeSensor
+        interval: 500
+        running: true
+        repeat: true
+        onTriggered: {
+            compassSensor.active = false;
+            compassSensor.active = true;
+        }
+        onRunningChanged: {
+            compassSensor.active = running;
         }
     }
 }

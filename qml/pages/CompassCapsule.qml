@@ -23,8 +23,8 @@ import Sailfish.Silica 1.0
 
 Item {
     id: compassCapsule
-    width: 500
-    height: 500
+    width: units.gu(31.25)
+    height: units.gu(31.25)
 
     // Normalizing the angle is a bit unnecessary here...
     property real direction: normalize360(- __ringRotation)  // In degrees, 0-359
@@ -46,6 +46,8 @@ Item {
         id: basePicture
         source: "../images/compass_ring_base.png"
         anchors.centerIn: parent
+        height: units.gu(31.25)
+        width: units.gu(31.25)
     }
 
     // The turnable ring (or "housing") of the compass.
@@ -54,6 +56,8 @@ Item {
     Image {
         source: "../images/compass_ring_" + settings.compassScaleStr + "_" + settings.currentNightmodeStr + ".png"
         anchors.centerIn: parent
+        height: units.gu(31)
+        width: units.gu(31)
         rotation: __ringRotation
         Behavior on rotation { RotationAnimation { duration: 0; direction: RotationAnimation.Shortest } }
     }
@@ -61,8 +65,8 @@ Item {
         source: "../images/compass_ring_lines_" + settings.currentNightmodeStr + "_?.png"
         color: changingDirection ? Theme.highlightColor : Theme.secondaryHighlightColor
         anchors.centerIn: parent
-        width: settings.nightmodeActive ? 84 : 300;   // !!! Update whenever you regenerate the images !!!
-        height: settings.nightmodeActive ? 496 : 354  // !!! Update whenever you regenerate the images !!!
+        width: settings.nightmodeActive ? units.gu(5.25) : units.gu(18.75)  // !!! Update whenever you regenerate the images !!!
+        height: settings.nightmodeActive ? units.gu(31) : units.gu(22.125)  // !!! Update whenever you regenerate the images !!!
         rotation: __ringRotation
         Behavior on rotation { RotationAnimation { duration: 0; direction: RotationAnimation.Shortest } }
     }
@@ -75,15 +79,16 @@ Item {
         anchors.centerIn: parent
         visible: !settings.nightmodeActive
         rotation: - compassCapsule.azimuth
-        Behavior on rotation { RotationAnimation { duration: 200; direction: RotationAnimation.Shortest } }
+        width: units.gu(2.5); height: units.gu(24)
+        Behavior on rotation { RotationAnimation { duration: 500; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; } }
     }
     RGBIcon {
         source: "../images/compass_needle_" + settings.currentNightmodeStr +  "_N_?.png"
         color: Theme.highlightColor
         anchors.centerIn: parent
         rotation: - compassCapsule.azimuth
-        width: 40; height: 384
-        Behavior on rotation { RotationAnimation { duration: 200; direction: RotationAnimation.Shortest } }
+        width: units.gu(2.5); height: units.gu(24)
+        Behavior on rotation { RotationAnimation { duration: 500; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; } }
     }
 
     MouseArea {
@@ -91,8 +96,8 @@ Item {
         width: compassCapsule.width
         height: compassCapsule.height
         property int __radius: width/2
-        property int __ringWidth: 45       // approx
-        property int __ringTouchExtra: 20  // +- 20 pix
+        property int __ringWidth: units.gu(2.8125)      // approx
+        property int __ringTouchExtra: units.gu(1.25)   // +- 20 pix
 
         function isTouchOnRing(touchX, touchY) {
             var fixedX = touchX - __radius

@@ -45,8 +45,8 @@ Item {
         color: Theme.highlightColor
         radius: 6.0
         falloffRadius: 0.23
-        width: 200
-        height: 200
+        width: units.gu(12.5)
+        height: units.gu(12.5)
         visible: false
     }
 
@@ -54,15 +54,15 @@ Item {
         id: buttonImage
         source: "../images/icon_" + name + "_" + currentValue + "_?.png"
         anchors.centerIn: parent
-        width: 56; height: 56
+        width: units.gu(3.5); height: units.gu(3.5)
         color: nightmodeActive ? Theme.highlightColor : "white"
     }
 
     MouseArea {
         id: mouseArea
         anchors.centerIn: parent
-        width: 64
-        height: 64
+        width: units.gu(4)
+        height: units.gu(4)
 
         onPressed: {
             highlightImage.visible = true

@@ -34,20 +34,40 @@ ApplicationWindow
     // change when the screen is blancked by an inactivity timer.
     property bool screenOn: true
 
+    Units {
+        id: units
+        scaleFactor: 1.2
+        fontScaleFactor: 1.0
+    }
+
+    property bool applicationSuspended: false
+
+    Connections {
+        target: Qt.application
+        onStateChanged: {
+            switch (Qt.application.state) {
+            case Qt.ApplicationSuspended:
+            case Qt.ApplicationInactive:
+                if (!applicationSuspended) {
+                    console.log("Application state changed to suspended");
+                    applicationSuspended = true;
+                }
+                break;
+            case Qt.ApplicationHidden:
+            case Qt.ApplicationActive:
+                if (applicationSuspended) {
+                    console.log("Application state changed to active");
+                    applicationSuspended = false;
+                }
+                break;
+            }
+        }
+    }
+
     CoverPage {
         id: coverPage
         compass: sharedCompass
         settings: sharedSettings
-
-        // Currently, this function is only used for debugging purposes.
-        onStatusChanged: {
-            var statusText = "";
-            if (status === Cover.Inactive) { statusText = "Inactive"; }
-            else if (status === Cover.Activating) { statusText = "Activating"; }
-            else if (status === Cover.Active) { statusText = "Active"; }
-            else if (status === Cover.Deactivating) { statusText = "Deactivating"; }
-            console.log("Cover status: " + statusText + "(" + status + ")");
-        }
     }
 
     initialPage: Component { CompassPage { compass: sharedCompass; settings: sharedSettings } }
@@ -55,8 +75,7 @@ ApplicationWindow
 
     OrientCompassSensor {
         id: sharedCompass
-        active: appWindow.screenOn &&
-                (appWindow.applicationActive || (coverPage.status === Cover.Active && coverPage.coverCompassActive))
+        active: !applicationSuspended || coverPage.coverCompassActive
     }
 
     CompassSettings {
@@ -67,7 +86,7 @@ ApplicationWindow
         id: lightSensor
 
         active: appWindow.screenOn && sharedSettings.nightmodeSetting === "auto" &&
-                (appWindow.applicationActive || coverPage.status === Cover.Active)
+                sharedCompass.active
 
         // Jolla light sensor gives quite easily a zero level in low light...
         property real _nightThreshold: 0
@@ -82,11 +101,6 @@ ApplicationWindow
                 sharedSettings.sensorNigth = false; // Default to "day" when sensor is off
             }
         }
-    }
-
-    // Currently, this function is only used for debugging purposes.
-    onApplicationActiveChanged: {
-        console.log("*Application: " + (applicationActive ? "ACTIVE" : "Inactive"));
     }
 
     ContextProperty {

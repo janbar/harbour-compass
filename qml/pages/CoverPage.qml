@@ -68,7 +68,7 @@ CoverBackground {
 
     Label {
         id: titleLabel
-        text: compass.active ? compass.scaledAzimuth.toFixed(0) : "Compass<br>paused"
+        text: compass.active ? Math.abs(compass.scaledAzimuth).toFixed(0) : "Compass<br>paused"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top        
         anchors.topMargin: Theme.paddingLarge

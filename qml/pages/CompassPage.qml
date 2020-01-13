@@ -76,7 +76,7 @@ Page {
             id: compassCapsule
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 60
+            anchors.bottomMargin: units.gu(8)
 
             azimuth: compass.azimuth
 
@@ -87,7 +87,7 @@ Page {
             id: directionLabel
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: compassCapsule.top
-            anchors.bottomMargin: 4
+            anchors.bottomMargin: units.gu(0.25)
             color: compassCapsule.changingDirection ? Theme.highlightColor :
                                                       (settings.nightmodeActive ? "black": Theme.secondaryHighlightColor)
             font.pixelSize: Theme.fontSizeMedium
@@ -97,11 +97,11 @@ Page {
 
         Rectangle {
             id: directionLine
-            width: 2
-            height: 160
+            width: units.gu(0.125)
+            height: units.gu(10)
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: directionLabel.top
-            anchors.bottomMargin: 10
+            anchors.bottomMargin: units.gu(0.625)
             color: compass.rightDirection ? Theme.highlightColor : Theme.secondaryHighlightColor
             visible: !settings.nightmodeActive
         }
@@ -112,16 +112,16 @@ Page {
             anchors.bottom: directionLine.top
             anchors.bottomMargin: 0  // There seems to be enough space
             color: compass.rightDirection ? Theme.highlightColor : Theme.secondaryHighlightColor
-            font.pixelSize: 100
+            font.pixelSize: units.gu(6.25)
             font.bold: false //compass.rightDirection
-            text: compass.scaledAzimuth.toFixed(0)
+            text: Math.abs(compass.scaledAzimuth).toFixed(0)
         }
 
         GlassItem {
             id: azimuthHighlight
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: directionLine.top
-            anchors.bottomMargin: -46
+            anchors.bottomMargin: -units.gu(2.875)
             color: Theme.highlightColor
             visible: !settings.nightmodeActive && compass.rightDirection
         }
@@ -129,7 +129,7 @@ Page {
             id: directionHighlight
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: directionLine.bottom
-            anchors.bottomMargin: -46
+            anchors.bottomMargin: -units.gu(2.875)
             color: Theme.highlightColor
             visible: !settings.nightmodeActive && compassCapsule.changingDirection
         }
@@ -181,11 +181,11 @@ Page {
         // Calibration indicator, shown only when calibration is needed
         MouseArea {
             id: calibrationIndicator
-            width: 200
-            height: 64
+            width: units.gu(12.5)
+            height: units.gu(4)
             anchors.horizontalCenter: compassCapsule.horizontalCenter
             anchors.bottom: compassCapsule.bottom
-            anchors.bottomMargin: 150
+            anchors.bottomMargin: units.gu(9.375)
             // NOTE: the threshold for showing the indicator is intentionally low (0.01),
             // it used to be 0.98 before. Starting SailfishOS 1.1.1.27, the calibration
             // reading seems to reach max 0.33 and we do not want show the indicator
@@ -208,7 +208,7 @@ Page {
                 text: labelShadow.text
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: labelShadow.top
-                anchors.topMargin: 2
+                anchors.topMargin: units.gu(0.125)
                 color: Theme.secondaryHighlightColor
                 font.bold: true
             }
