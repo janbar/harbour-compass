@@ -24,7 +24,7 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
-    property OrientCompassSensor compass
+    property CompassSensor compass
     property CompassSettings settings
 
     property real __calibrationValue: settings.calibrationTest ? (compass.direction / 360) : compass.calibration
@@ -114,7 +114,7 @@ Page {
             color: compass.rightDirection ? Theme.highlightColor : Theme.secondaryHighlightColor
             font.pixelSize: units.gu(6.25)
             font.bold: false //compass.rightDirection
-            text: Math.abs(compass.scaledAzimuth).toFixed(0)
+            text: compass.scaledAzimuth.toFixed(0)
         }
 
         GlassItem {

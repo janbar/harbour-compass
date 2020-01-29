@@ -73,8 +73,9 @@ ApplicationWindow
     initialPage: Component { CompassPage { compass: sharedCompass; settings: sharedSettings } }
     cover: coverPage
 
-    OrientCompassSensor {
+    CompassSensor {
         id: sharedCompass
+        settings: sharedSettings
         active: !applicationSuspended || coverPage.coverCompassActive
     }
 
@@ -92,7 +93,7 @@ ApplicationWindow
         property real _nightThreshold: 0
 
         onReadingChanged: {
-            console.log("***Light reading: " + reading.illuminance);
+            //console.log("***Light reading: " + reading.illuminance);
             sharedSettings.sensorNigth = (reading.illuminance <= _nightThreshold) && active;
         }
         onActiveChanged: {

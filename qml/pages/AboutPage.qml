@@ -42,7 +42,7 @@ Page {
                 title: "Orienteering Compass"
             }
             Label {
-                text: "Version 1.0.1"
+                text: "Version 3.0.0"
                 color: Theme.primaryColor
                 wrapMode: TextEdit.WordWrap
                 width: parent.width
@@ -53,16 +53,29 @@ Page {
                 linkColor: "#ffffff"
                 wrapMode: TextEdit.WordWrap
                 width: parent.width
+                font.pixelSize: units.fx("small")
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
                 }
             }
             Label {
-                text: "Source code available in <a href=\"https://github.com/vuorisalmi/harbour-orienteeringcompass\">https://github.com/vuorisalmi/harbour-orienteeringcompass</a> under the terms of GPLv3 license."
+                text: "Improved by Janbar, <a href=\"mailto:jlbarriere68@gmail.com?subject=About%20Compass%20SailfishOS\">jlbarriere68@gmail.com</a>"
                 color: Theme.primaryColor
                 linkColor: "#ffffff"
                 wrapMode: TextEdit.WordWrap
                 width: parent.width
+                font.pixelSize: units.fx("small")
+                onLinkActivated: {
+                    Qt.openUrlExternally(link)
+                }
+            }
+            Label {
+                text: "Source code available in <a href=\"https://github.com/janbar/harbour-compass\">https://github.com/janbar/harbour-compass</a> under the terms of GPLv3 license."
+                color: Theme.primaryColor
+                linkColor: "#ffffff"
+                wrapMode: TextEdit.WordWrap
+                width: parent.width
+                font.pixelSize: units.fx("small")
                 onLinkActivated: {
                     Qt.openUrlExternally(link)
                 }

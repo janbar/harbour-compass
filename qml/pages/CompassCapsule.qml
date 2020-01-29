@@ -80,7 +80,7 @@ Item {
         visible: !settings.nightmodeActive
         rotation: - compassCapsule.azimuth
         width: units.gu(2.5); height: units.gu(24)
-        Behavior on rotation { RotationAnimation { duration: 500; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; } }
+        Behavior on rotation { RotationAnimation { duration: 500; direction: RotationAnimation.Shortest; } }
     }
     RGBIcon {
         source: "../images/compass_needle_" + settings.currentNightmodeStr +  "_N_?.png"
@@ -88,7 +88,7 @@ Item {
         anchors.centerIn: parent
         rotation: - compassCapsule.azimuth
         width: units.gu(2.5); height: units.gu(24)
-        Behavior on rotation { RotationAnimation { duration: 500; direction: RotationAnimation.Shortest; easing.type: Easing.InOutQuad; } }
+        Behavior on rotation { RotationAnimation { duration: 500; direction: RotationAnimation.Shortest; } }
     }
 
     MouseArea {
@@ -97,7 +97,7 @@ Item {
         height: compassCapsule.height
         property int __radius: width/2
         property int __ringWidth: units.gu(2.8125)      // approx
-        property int __ringTouchExtra: units.gu(1.25)   // +- 20 pix
+        property int __ringTouchExtra: units.gu(2)
 
         function isTouchOnRing(touchX, touchY) {
             var fixedX = touchX - __radius
@@ -122,7 +122,7 @@ Item {
         }
         onPositionChanged: {
             if (compassCapsule.changingDirection) {
-                compassCapsule.__ringRotation += xyToAngle(mouseX, mouseY) - compassCapsule.__previousAngle
+                compassCapsule.__ringRotation += Math.round(xyToAngle(mouseX, mouseY) - compassCapsule.__previousAngle)
                 compassCapsule.__previousAngle = xyToAngle(mouseX, mouseY)
             }
         }

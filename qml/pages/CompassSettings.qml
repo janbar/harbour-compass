@@ -19,7 +19,7 @@
 */
 
 import QtQuick 2.0
-import harbour.orienteeringcompass 1.0
+import harbour.compass 1.0 as Builtin
 
 // Non-viaual item
 Item {
@@ -46,17 +46,17 @@ Item {
     //onCompassScaleStrChanged: { console.log("Compass scale: " + compassScaleStr); }
     //onCompassScaleIndexChanged: { console.log("Compass scale index: " + compassScaleIndex); }
 
-    QSettingsItem {
+    Builtin.SettingsItem {
         id: qSettingScale
         key: "compassScale"
         defaultValue: "360"
     }
-    QSettingsItem {
+    Builtin.SettingsItem {
         id: qSettingNightmode
         key: "nightmode"
         defaultValue: "auto"
     }
-    QSettingsItem {
+    Builtin.SettingsItem {
         id: qSettingCalibrationTest
         key: "calibrationTest"
         defaultValue: false

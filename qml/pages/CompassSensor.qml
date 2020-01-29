@@ -19,7 +19,8 @@
 */
 
 import QtQuick 2.0
-import QtSensors 5.0
+import QtSensors 5.2 as Legacy
+import harbour.compass 1.0 as Builtin
 
 
 // This is a non-visual item, a wrapper around the Qt Compass sensor element.
@@ -28,12 +29,13 @@ import QtSensors 5.0
 // value in different formats according to current settings.
 Item {
     id: compass
+    property CompassSettings settings
 
-    property alias active: activeSensor.running
-    property real calibration: 0.0 // Default to 100%
+    property bool active: true
+    property real calibration: 0.0 // Default to 0%
     property real azimuth: 0.0     // current azimuth in degrees
     property real direction: 0.0   // the orienteering direction set by user, 0-359.99 degrees
-    property bool rightDirection: false // (Math.abs(azimuth - direction) < 2.0 || Math.abs(azimuth - direction) > 358.0)
+    property bool rightDirection: false // (diff < 4.0)
 
     property real __normalDirection: normalize360(direction)  // 0-359.99 degrees for sure
     property real scaledDirection: scaleAngle(direction)
@@ -42,7 +44,7 @@ Item {
 
     function normalize360(angle) {
         var semiNormalized = angle % 360
-        return semiNormalized >= 0 ? semiNormalized : semiNormalized + 360
+        return semiNormalized < 0 ? 360 + semiNormalized : semiNormalized
     }
     function scaleAngle(angle360) {
         return angle360 / 360 * compassScaleVal
@@ -50,40 +52,16 @@ Item {
 
     property real value: 0.0
 
-    Compass {
-        id: compassSensor
-
+    Builtin.Compass {
+        id: compassBuiltin
+        active: compass.active
+        dataRate: 2
         onReadingChanged: {
-            compass.value = reading.azimuth;
-            var c = reading.calibrationLevel;
-            if (c > compass.calibration)
-                compass.calibration = c;
-            compassReader.start();
-        }
-    }
-
-    Timer {
-        id: compassReader
-        interval: 500
-        onTriggered: {
-            var n = compass.value;
+            var n = normalize360(reading.azimuth);
             compass.azimuth = n;
-            compass.rightDirection = (Math.abs(n - compass.__normalDirection) < 4.0 || Math.abs(n - compass.__normalDirection) > 356.0);
-        }
-    }
-
-    //!FIXME: Sony Xperia 10 needs challenge
-    Timer {
-        id: activeSensor
-        interval: 500
-        running: true
-        repeat: true
-        onTriggered: {
-            compassSensor.active = false;
-            compassSensor.active = true;
-        }
-        onRunningChanged: {
-            compassSensor.active = running;
+            var d = Math.abs(n - compass.__normalDirection);
+            compass.rightDirection = d < 4.0 || d > 356.0;
+            compass.calibration = reading.calibrationLevel;
         }
     }
 }

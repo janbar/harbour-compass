@@ -23,7 +23,7 @@ import Sailfish.Silica 1.0
 
 CoverBackground {
 
-    property OrientCompassSensor compass
+    property CompassSensor compass
     property CompassSettings settings
     property bool coverCompassActive: true // Compass active based on the manual play/pause action?
 

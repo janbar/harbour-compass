@@ -1,9 +1,9 @@
-Name: harbour-orienteeringcompass
+Name: harbour-compass
 Summary: Orienteering Compass
-Version: 1.0.1
+Version: 3.0.0
 Release: 1
 Group: Qt/Qt
-URL: https://github.com/vuorisalmi/harbour-orienteeringcompass
+URL: https://github.com/janbar/harbour-compass
 License: GPLv3
 Sources:
 - '%{name}-%{version}.tar.bz2'
@@ -14,19 +14,15 @@ Description: "Traditional compass for walking, hiking, orienteering etc. It is l
 Configure: none
 Builder: qtc5
 PkgConfigBR:
-- sailfishapp >= 0.0.10
+- sailfishapp
 - Qt5Core
 - Qt5Qml
 - Qt5Quick
 Requires:
-- sailfishsilica-qt5 >= 0.10.9
+- sailfishsilica-qt5 >= 1.1.0
 Files:
-- /usr/share/icons/hicolor/86x86/apps
-- /usr/share/applications
-- /usr/share/harbour-orienteeringcompass
-- /usr/bin
 - '%{_datadir}/icons/hicolor/86x86/apps/%{name}.png'
 - '%{_datadir}/applications/%{name}.desktop'
 - '%{_datadir}/%{name}/qml'
-- '%{_bindir}'
+- '%{_bindir}/%{name}'
 PkgBR: []

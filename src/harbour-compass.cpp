@@ -26,11 +26,15 @@
 #include <QQmlEngine>
 #include <sailfishapp.h>
 #include "qsettingsitemqmlproxy.h"
-
+#include "plugin.h"
 
 int main(int argc, char *argv[])
 {
-    qmlRegisterType<QSettingsItemQmlProxy>("harbour.orienteeringcompass", 1, 0, "QSettingsItem");
+    qmlRegisterType<QSettingsItemQmlProxy>("harbour.compass", 1, 0, "SettingsItem");
+    qmlRegisterType<BuiltInCompass>("harbour.compass", 1, 0, "Compass");
+
+    QScopedPointer<BuiltInSensorPlugin> sensor(new BuiltInSensorPlugin());
+    sensor->registerSensors();
 
     return SailfishApp::main(argc, argv);
 }
