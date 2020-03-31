@@ -13,8 +13,8 @@ Name:       harbour-compass
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Orienteering Compass
-Version:    3.0.0
-Release:    1
+Version:    3.0.1
+Release:    2
 Group:      Qt/Qt
 License:    GPLv3
 URL:        https://github.com/janbar/harbour-compass
