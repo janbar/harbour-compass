@@ -22,17 +22,11 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtSensors 5.0
-import org.freedesktop.contextkit 1.0
 import "pages"
 
 ApplicationWindow
 {
     id: appWindow
-
-    // Updated by the context property below (using contextkit).
-    // We need this because the applicationActive status does not seem to
-    // change when the screen is blancked by an inactivity timer.
-    property bool screenOn: true
 
     Units {
         id: units
@@ -86,7 +80,7 @@ ApplicationWindow
     LightSensor {
         id: lightSensor
 
-        active: appWindow.screenOn && sharedSettings.nightmodeSetting === "auto" &&
+        active: !appWindow.applicationSuspended && sharedSettings.nightmodeSetting === "auto" &&
                 sharedCompass.active
 
         // Jolla light sensor gives quite easily a zero level in low light...
@@ -101,17 +95,6 @@ ApplicationWindow
             if (!active) {
                 sharedSettings.sensorNigth = false; // Default to "day" when sensor is off
             }
-        }
-    }
-
-    ContextProperty {
-        id: screenBlanked
-        key: "Screen.Blanked"
-        value: 0
-
-        onValueChanged: {
-            console.log("*Screen: " + ((value) ? "Off (" : "On (") + value + ")");
-            appWindow.screenOn = (value === 0);
         }
     }
 }
